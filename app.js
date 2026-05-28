@@ -1,8 +1,12 @@
 import express from "express";
 import { getEmployee, getEmployees, getRandomEmployee } from "#db/employees";
-
+import employeesRouter from "./api/employees.js";
 const app = express();
 export default app;
+
+app.use(express.json());
+
+app.use("/employees", employeesRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello employees!");
@@ -32,4 +36,7 @@ app.get("/employees/:id", (req, res) => {
   }
 
   res.send(employee);
+});
+app.use((err, req, res, next) => {
+  res.status(500).send("Sorry! Something went wrong :(");
 });
